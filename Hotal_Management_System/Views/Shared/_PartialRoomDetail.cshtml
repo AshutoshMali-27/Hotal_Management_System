@@ -1,0 +1,57 @@
+﻿
+    @model  IEnumerable<Hotal_Management_System.ViewModel.ClsRoomDetailVIewModel>
+
+<table style="width:100%">
+    <thead>
+        <th>
+            Action
+        </th>
+        <th>
+            Room Image
+        </th>
+        <th>
+            Room No.
+        </th>
+        @*<th>
+            Room Price
+        </th>*@
+        <th>
+            Booking Status
+        </th>
+        <th>
+            Room Type
+        </th>
+        @*<th>
+            Room Capacity
+        </th>*@
+        <th>
+            Room Description
+        </th>
+
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+            {
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/RoomImages/"+item.RoomImage)" width="30" height="30" class="img-responsive" />
+                    </td>
+                    <td>
+                        @item.RoomNo
+                    </td>
+       
+                     <td>
+                         @item.RoomType
+                     </td>
+                     
+                     <td>
+                         @item.RoomDescription
+                     </td>
+
+                </tr>
+            }
+    </tbody>
+</table>
