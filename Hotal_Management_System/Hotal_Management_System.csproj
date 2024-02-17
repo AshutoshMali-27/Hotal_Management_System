@@ -168,6 +168,8 @@
       <DependentUpon>HotelDBmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ClsRoom.cs" />
+    <Compile Include="ViewModel\ClsRoomDetailVIewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -226,9 +228,11 @@
     <Content Include="Views\Home\Services.cshtml" />
     <Content Include="Views\Room\Index.cshtml" />
     <Content Include="Views\Booking\Index.cshtml" />
+    <Content Include="Views\Shared\_PartialRoomDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="RoomImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

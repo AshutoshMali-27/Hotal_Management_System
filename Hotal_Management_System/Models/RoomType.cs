@@ -15,6 +15,6 @@ namespace Hotal_Management_System.Models
     public partial class RoomType
     {
         public int RoomTypeID { get; set; }
-        public string RoomType1 { get; set; }
+        public string RoomTypeName { get; set; }
     }
 }
