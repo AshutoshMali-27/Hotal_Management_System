@@ -1,0 +1,9 @@
+﻿body {
+}
+
+
+#table1 th tr td {
+    border: 1px solid black;
+    margin: 4px;
+    padding: 4px;
+}

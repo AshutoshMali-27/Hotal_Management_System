@@ -41,28 +41,57 @@ namespace Hotal_Management_System.Controllers
         [HttpPost]
         public ActionResult Index(ClsRoom objClsRoom)
         {
-            string ImageUniqueName = Guid.NewGuid().ToString();
-            String ActualImageName = ImageUniqueName + Path.GetExtension(objClsRoom.Image.FileName);
-            objClsRoom.Image.SaveAs(filename: Server.MapPath("~/RoomImages/" + ActualImageName));
-
-            Room objRoom = new Room()
+            string message = String.Empty;
+            string ImageUniqueName = String.Empty;
+            string ActualImageName = String.Empty;
+            if (objClsRoom.RoomID == 0)
             {
-                RoomNo = objClsRoom.RoomNo,
-                RoomDescription = objClsRoom.RoomDescription,
-                RoomPrice = Convert.ToDecimal(objClsRoom.RoomPrice),
-                BookingStatusId = objClsRoom.BookingStatusId,
-                isActive = true,
-                RoomCapecity = objClsRoom.RoomCapecity,
-                RoomTypeID = objClsRoom.RoomTypeID,
-                RoomImage=ActualImageName
+                 ImageUniqueName = Guid.NewGuid().ToString();
+                 ActualImageName = ImageUniqueName + Path.GetExtension(objClsRoom.Image.FileName);
+                objClsRoom.Image.SaveAs(filename: Server.MapPath("~/RoomImages/" + ActualImageName));
+
+                Room objRoom = new Room()
+                {
+                    RoomNo = objClsRoom.RoomNo,
+                    RoomDescription = objClsRoom.RoomDescription,
+                    RoomPrice = Convert.ToDecimal(objClsRoom.RoomPrice),
+                    BookingStatusId = objClsRoom.BookingStatusId,
+                    isActive = true,
+                    RoomCapecity = objClsRoom.RoomCapecity,
+                    RoomTypeID = objClsRoom.RoomTypeID,
+                    RoomImage = ActualImageName
 
 
-            };
+                };
 
-            objhotelDBEntities.Rooms.Add(objRoom);
+                objhotelDBEntities.Rooms.Add(objRoom);
+                message = "Added.";
+            }
+            else
+            {
+                if(objClsRoom.Image != null)
+                {
+                     ImageUniqueName = Guid.NewGuid().ToString();
+                     ActualImageName = ImageUniqueName + Path.GetExtension(objClsRoom.Image.FileName);
+                    objClsRoom.Image.SaveAs(filename: Server.MapPath("~/RoomImages/" + ActualImageName));
+                    objClsRoom.RoomImage = ActualImageName;
+                }
+                Room objRoom = objhotelDBEntities.Rooms.Single(model => model.RoomID == objClsRoom.RoomID);
+                objRoom.RoomNo = objClsRoom.RoomNo;
+                objRoom.RoomDescription = objClsRoom.RoomDescription;
+                objRoom.RoomPrice = Convert.ToDecimal(objClsRoom.RoomPrice);
+                objRoom.BookingStatusId = objClsRoom.BookingStatusId;
+                objRoom.isActive = true;
+                objRoom.RoomCapecity = objClsRoom.RoomCapecity;
+                objRoom.RoomTypeID = objClsRoom.RoomTypeID;
+             
+                message = "Updates";
+            }
+
+      
             objhotelDBEntities.SaveChanges();
 
-            return Json(data:new { message ="Room Successfully Added .", success=true}, JsonRequestBehavior.AllowGet);
+            return Json(data:new { message ="Room Successfully"+message, success=true}, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -72,13 +101,13 @@ namespace Hotal_Management_System.Controllers
             IEnumerable<ClsRoomDetailVIewModel> listofRoomDetailViewModels =
                 (from objRooms in objhotelDBEntities.Rooms
                  join objbooking in objhotelDBEntities.BStatus on objRooms.BookingStatusId equals objbooking.BookingStatusID
-                 join objRoomType in objhotelDBEntities.RoomTypes on objRooms.RoomTypeID equals objRoomType.RoomTypeID
+                 join objRoomType in objhotelDBEntities.RoomTypes on objRooms.RoomTypeID equals objRoomType.RoomTypeID where objRooms.isActive==true
                  select new ClsRoomDetailVIewModel()
                  {
                      RoomNo = objRooms.RoomNo.ToString(),
                      RoomDescription=objRooms.RoomDescription.ToString(),
-                    // RoomCapecity=objRooms.RoomCapecity,
-                     //RoomPrice= Convert.ToDouble(objRooms.RoomPrice),
+                     RoomCapecity=(Int32)objRooms.RoomCapecity,
+                     RoomPrice= (double)objRooms.RoomPrice,
                      BookingStatus=objbooking.BookingStatus.ToString(),
                      RoomType=objRoomType.RoomTypeName.ToString(),
                      RoomImage=objRooms.RoomImage.ToString(),
@@ -90,6 +119,24 @@ namespace Hotal_Management_System.Controllers
 
             return PartialView("_PartialRoomDetail", listofRoomDetailViewModels);
 
+        }
+
+
+        [HttpGet]
+        public JsonResult EditRoomDetail(int RoomID)
+        {
+            var Result = objhotelDBEntities.Rooms.Single(model => model.RoomID == RoomID);
+            return Json(Result, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
+        public JsonResult DeleteRoomDetails(int RoomID)
+        {
+            Room objRoom= objhotelDBEntities.Rooms.Single(model => model.RoomID == RoomID);
+            objRoom.isActive = false;
+            objhotelDBEntities.SaveChanges();
+            return Json(data: new { message = "Record Successfully Deleted.",success=true },JsonRequestBehavior.AllowGet);
         }
     }
 }
