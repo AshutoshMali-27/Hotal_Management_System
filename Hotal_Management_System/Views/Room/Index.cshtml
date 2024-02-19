@@ -12,6 +12,9 @@
         $("#txtRoomID").val('0');
         $("#btnsave").click(function () {
             saveRoomData();
+            if ($('#formRoom').valid()) {
+                return;
+            }
         });
     });
         
