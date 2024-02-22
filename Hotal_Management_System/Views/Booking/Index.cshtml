@@ -38,8 +38,21 @@
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(expression: model => model.BookingFrom, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(expression: model => model.BookingFrom, htmlAttributes: new { @class = "from-control" })
+                                @Html.EditorFor(expression: model => model.BookingFrom, additionalViewData: new { @class = "from-control" })
                                 @Html.ValidationMessageFor(expression: model => model.CustomerAddress, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(expression: model => model.BookingTo, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(expression: model => model.BookingTo, additionalViewData: new { @class = "from-control" })
+                                @Html.ValidationMessageFor(expression: model => model.BookingTo, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(expression: model => model.BookingTo, htmlAttributes: new { @class = "control-label" })
+@Html.DropDownListFor(expression:model=>model)
                             </div>
                         </div>
                     </div>
